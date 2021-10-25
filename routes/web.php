@@ -31,4 +31,5 @@ Route::prefix('room')->group(function () {
     Route::post('/update/{id}', [RoomController::class, 'update']);
     Route::post('/add/{id}', [RoomController::class, 'add']);
     Route::post('/delete_attendance/{id}', [RoomController::class, 'delete_attendance']);
+    Route::get('/destroy/{id}', [RoomController::class, 'destroy']);
 });

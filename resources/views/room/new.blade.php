@@ -4,6 +4,9 @@
     <div class="row">
         <div class="col-md-7 mt-3">
             <h2>Tạo phòng họp mới</h2>
+            <script>
+                document.title = "Tạo phòng họp mới";
+            </script>
             <!-- general form elements -->
             <div class="card card-primary">
                 <div class="card-header">

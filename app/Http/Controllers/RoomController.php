@@ -91,10 +91,10 @@ class RoomController extends Controller
         $this->AuthLogin();
         $userId = Session::get('id');
         $room = Room::findOrFail($id);
+        $data_r = array();
         if ($room->host != $userId)
-            return false;
+            return json_encode($data_r);
         $list_attendance = $request->attendance;
-        $data_r = '';
         if (isset($list_attendance)) {
             $list  =  explode(",", $list_attendance);
             foreach ($list as $item) {
@@ -108,23 +108,24 @@ class RoomController extends Controller
                         'user_id' => $user->id,
                         'auth' => 'attendance',
                     ]);
-                    $data_r .= '<tr>
-                            <td>'.$room_d->id.'</td>
-                            <td>'.$room_d->user->fullname.'</td>
-                            <td>'.$room_d->user->email.'</td>
-                            <td>'.$room_d->user->phone.'</td>
-                            <td>'.$room_d->auth.'</td>
-                            <td>
-                                <a href="#" class="btn btn-outline-danger"><i class="fa fa-trash"></i></a>
-                            </td>
-                        </tr>';
+                    array_push($data_r, [
+                        $room_d->id,
+                        $room_d->user->fullname,
+                        $room_d->user->email,
+                        $room_d->user->phone,
+                        $room_d->auth,
+                        '<a href="#" class="btn btn-outline-danger delete_attendance"
+                        onclick="return confirm(' . "'" . 'Xóa người này khỏi phòng họp!' . "'" . ')"
+                        data-id="' . $room_d->user_id . '"><i class="fa fa-trash"></i></a>',
+                    ]);
                 }
             }
         }
-        return $data_r;
+        return json_encode($data_r);
     }
 
-    public function delete_attendance(Request $request, $id){
+    public function delete_attendance(Request $request, $id)
+    {
         $this->AuthLogin();
         $userId = Session::get('id');
         $room = Room::findOrFail($id);
@@ -132,10 +133,21 @@ class RoomController extends Controller
             return false;
         $user_id = $request->user_id;
         $check = RoomDetail::where('room_id', $room->id)->where('user_id', $user_id)->first();
-        if($check){
+        if ($check) {
             $check->delete();
         }
         return true;
+    }
+
+    public function destroy($id)
+    {
+        $this->AuthLogin();
+        $userId = Session::get('id');
+        $room = Room::findOrFail($id);
+        if ($room->host != $userId)
+            return redirect()->back();
+        $room->delete();
+        return Redirect::to('/room');
     }
 
     function getToken()

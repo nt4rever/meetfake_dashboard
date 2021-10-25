@@ -20,6 +20,9 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Danh sách phòng họp của bạn</h3>
+                    <script>
+                        document.title = "Danh sách phòng họp của bạn";
+                    </script>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">

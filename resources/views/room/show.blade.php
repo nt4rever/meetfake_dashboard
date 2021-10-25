@@ -20,6 +20,9 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Phòng họp: <b>{{ $room->title }}</b> ({{ $room->roomId }})</h3>
+                    <script>
+                        document.title = "Phòng họp: {{ $room->title }} ({{ $room->roomId }})";
+                    </script>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -98,10 +101,6 @@
                                 @endif
                             </select>
                         </div>
-                    </div>
-                    <!-- /.card-body -->
-
-                    <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Sửa đổi</button>
                     </div>
                 </form>
@@ -122,11 +121,11 @@
                         <input type="text" data-role="tagsinput" name="attendance" id="list_attendance">
                         <input type="hidden" name="room_id" value="{{ $room->id }}">
                     </div>
-                </div>
-                <!-- /.card-body -->
-
-                <div class="card-footer">
                     <button type="submit" class="btn btn-primary" id="add_attendance">Thêm khách mời</button>
+                </div>
+                <div class="card-footer">
+                    <a href="{{URL::to('/room/destroy/'.$room->id)}}" class="btn btn-outline-danger"
+                        onclick="return confirm('Bạn chắc chắn muốn xóa phòng họp này!')">Xóa phòng họp</a>
                 </div>
             </div>
             <!-- /.card -->
@@ -182,10 +181,6 @@
                     });
                     return false;
                 });
-            });
-        </script>
-        <script>
-            $(function() {
                 $("#add_attendance").on('click', function() {
                     var _token = $('input[name=_token]').val();
                     var room_id = $('input[name=room_id]').val();
@@ -199,11 +194,13 @@
                                 attendance: list,
                                 _token: _token
                             },
-                            dataType: "html",
+                            dataType: "json",
                             success: function(data) {
-                                if (data != false && data != '') {
-                                    $('#example1').find('tbody').append(data);
-                                }
+                                var s = JSON.stringify(data);
+                                s = JSON.parse(s);
+                                s.forEach(element => {
+                                    table.row.add(element).draw(false)
+                                });
                             },
                             error: function(error) {
                                 console.log(error);
