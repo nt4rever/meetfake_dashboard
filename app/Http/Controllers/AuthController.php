@@ -30,6 +30,7 @@ class AuthController extends Controller
             if (Hash::check($request->password, $user->password)) {
                 Session::put('auth', $user->fullname);
                 Session::put('email', $user->email);
+                Session::put('id', $user->id);
                 return Redirect::to('/');
             }
         }

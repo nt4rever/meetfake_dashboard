@@ -12,7 +12,12 @@ class Room extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'roomId', 'status', 'host',
+        'roomId', 'title', 'status', 'host',
     ];
     public $timestamps = true;
+
+    public function owner()
+    {
+        return $this->belongsTo(Users::class, 'host');
+    }
 }

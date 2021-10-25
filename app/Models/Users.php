@@ -19,4 +19,8 @@ class Users extends Model
     {
         $this->attributes['password'] = bcrypt($password);
     }
+
+    public function memberOf(){
+        return $this->hasMany(RoomDetail::class,'user_id','id');
+    }
 }
