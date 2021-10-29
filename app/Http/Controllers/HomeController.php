@@ -23,4 +23,10 @@ class HomeController extends Controller
         $this->AuthLogin();
         return view('index');
     }
+
+    public function calendar()
+    {
+        $this->AuthLogin();
+        return view('util.calendar');
+    }
 }

@@ -29,6 +29,7 @@
     <!-- summernote -->
     <link rel="stylesheet" href="{{ URL::asset('/app/plugins/summernote/summernote-bs4.min.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('/app/css/bootstrap-tagsinput.css') }}">
+    @stack('css')
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -194,9 +195,9 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-header">EXAMPLES</li>
+                        <li class="nav-header">UTILS</li>
                         <li class="nav-item">
-                            <a href="pages/calendar.html" class="nav-link">
+                            <a href="{{URL::to('/calendar')}}" class="nav-link">
                                 <i class="nav-icon far fa-calendar-alt"></i>
                                 <p>
                                     Calendar

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Redirect;
@@ -32,4 +33,12 @@ Route::prefix('room')->group(function () {
     Route::post('/add/{id}', [RoomController::class, 'add']);
     Route::post('/delete_attendance/{id}', [RoomController::class, 'delete_attendance']);
     Route::get('/destroy/{id}', [RoomController::class, 'destroy']);
+});
+
+Route::get('/calendar', [HomeController::class, 'calendar']);
+
+Route::prefix('api')->group(function () {
+    Route::get('event', [EventController::class, 'getEvent']);
+    Route::post('save-event', [EventController::class, 'saveEvent']);
+    Route::post('drop-event', [EventController::class, 'dropEvent']);
 });
