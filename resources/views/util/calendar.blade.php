@@ -4,6 +4,9 @@
         <!-- fullCalendar -->
         <link rel="stylesheet" href="{{ URL::asset('/app/plugins/fullcalendar/main.css') }}">
     @endpush
+    <script>
+        document.title = "My Calendar";
+    </script>
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -81,7 +84,8 @@
                                 <h3 class="card-title">Save Event</h3>
                             </div>
                             <div class="card-body">
-                                <div class="input-group"><button class="btn btn-primary" id="save-event">Save</button>
+                                <div class="input-group"><button class="btn btn-success" style="width: 100%"
+                                        id="save-event">Save</button>
                                 </div>
                                 <!-- /input-group -->
                             </div>
@@ -108,6 +112,7 @@
         <!-- fullCalendar 2.2.5 -->
         <script src="{{ URL::asset('/app/plugins/moment/moment.min.js') }}"></script>
         <script src="{{ URL::asset('/app/plugins/fullcalendar/main.js') }}"></script>
+        <script src="{{ URL::asset('/app/plugins/fullcalendar/locales/vi.js') }}"></script>
         <script>
             $(function() {
                 /* initialize the external events
@@ -158,6 +163,7 @@
                     itemSelector: '.external-event',
                     eventData: function(eventEl) {
                         return {
+                            id: 2,
                             title: eventEl.innerText,
                             backgroundColor: window.getComputedStyle(eventEl, null).getPropertyValue(
                                 'background-color'),
@@ -168,6 +174,8 @@
                     }
                 });
 
+                let clickCnt = 0;
+
                 var calendar = new Calendar(calendarEl, {
                     headerToolbar: {
                         left: 'prev,next today',
@@ -175,6 +183,7 @@
                         right: 'dayGridMonth,timeGridWeek,timeGridDay',
                     },
                     themeSystem: 'bootstrap',
+                    locale: 'vi',
                     //Random default events
                     // events: dataEvents,
                     editable: true,
@@ -186,6 +195,20 @@
                             info.draggedEl.parentNode.removeChild(info.draggedEl);
                         }
                     },
+                    eventClick: function(info) {
+                        clickCnt++;
+                        if (clickCnt === 1) {
+                            oneClickTimer = setTimeout(function() {
+                                clickCnt = 0;
+                            }, 400);
+                        } else if (clickCnt === 2) {
+                            clearTimeout(oneClickTimer);
+                            clickCnt = 0;
+                            var r = confirm("Delete this event!");
+                            if (r == true)
+                                info.event.remove();
+                        }
+                    }
                 });
 
 
@@ -205,7 +228,7 @@
                         },
                         dataType: "json",
                         success: function(data) {
-                            console.log(data);
+                            // console.log(data);
                         },
                         error: function(error) {
                             console.log(error);
@@ -232,7 +255,7 @@
                                 },
                                 dataType: "json",
                                 success: function(data) {
-                                    console.log(data);
+                                    // console.log(data);
                                 },
                                 error: function(error) {
                                     console.log(error);
@@ -240,6 +263,11 @@
                             });
                         }
                     });
+                    Swal.fire(
+                        'Done!',
+                        'You event has been saved!',
+                        'success'
+                    );
                 })
                 /* ADDING EVENTS */
                 var currColor = '#3c8dbc' //Red by default
@@ -295,6 +323,36 @@
                                 end: new Date(element.end),
                                 allDay: element.allDay,
                                 daysOfWeek: element.daysOfWeek,
+                                url: element.url,
+                                backgroundColor: element.backgroundColor,
+                                borderColor: element.borderColor,
+                            });
+                        });
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+
+                $.ajax({
+                    type: "GET",
+                    cache: false,
+                    url: '/api/room-event',
+                    data: {
+                        _token: _token
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        data.forEach(element => {
+                            calendar.addEvent({
+                                id: element.id,
+                                title: element.title,
+                                startRecur: new Date(element.start),
+                                endRecur: new Date(element.end),
+                                allDay: element.allDay,
+                                daysOfWeek: element.daysOfWeek,
+                                startTime: element.startTime,
+                                endTime: element.endTime,
                                 url: element.url,
                                 backgroundColor: element.backgroundColor,
                                 borderColor: element.borderColor,

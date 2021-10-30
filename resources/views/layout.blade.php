@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="{{ URL::asset('/app/plugins/daterangepicker/daterangepicker.css') }}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{ URL::asset('/app/plugins/summernote/summernote-bs4.min.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('/app/plugins/sweetalert2/sweetalert2.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('/app/css/bootstrap-tagsinput.css') }}">
     @stack('css')
 </head>
@@ -303,6 +304,9 @@
     <script src="{{ URL::asset('/app/plugins/summernote/summernote-bs4.min.js') }}"></script>
     <!-- overlayScrollbars -->
     <script src="{{ URL::asset('/app/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+
+    <script src="{{ URL::asset('/app/plugins/sweetalert2/sweetalert2.js') }}"></script>
+
     <!-- AdminLTE App -->
     <script src="{{ URL::asset('/app/dist/js/adminlte.js') }}"></script>
     <script src="{{ URL::asset('/app/js/bootstrap-tagsinput.js') }}"></script>

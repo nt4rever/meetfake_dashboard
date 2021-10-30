@@ -101,6 +101,58 @@
                                 @endif
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label>Thời gian họp:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                </div>
+                                @php
+                                    if ($room->start) {
+                                        $time = $room->start . ' | ' . $room->startTime . ' - ' . $room->end . ' | ' . $room->endTime;
+                                    }
+                                @endphp
+                                <input type="text" class="form-control float-right" value="
+                                                        <?php if (isset($time)) {
+                                                            echo $time;
+                                                        } ?>" name="time" id="reservationtime">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <div class="form-group">
+                            <label>Ngày lặp lại:</label>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <!-- checkbox -->
+                                    <div class="form-group clearfix">
+                                        <?php $color = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'dark']; ?>
+                                        @for ($i = 0; $i < 7; $i++)
+                                            <?php
+                                            $checked = '';
+                                            if ($room->daysOfWeek) {
+                                                foreach (json_decode($room->daysOfWeek) as $item) {
+                                                    if ((int) $item == $i) {
+                                                        $checked = 'checked';
+                                                    }
+                                                }
+                                            }
+                                            ?>
+                                            <div class="icheck-{{ $color[$i] }} d-inline">
+                                                <input type="checkbox" name="daysOfWeek[]" value="{{ $i }}"
+                                                    id="checkboxP{{ $i }}" {{ $checked }}>
+                                                <label for="checkboxP{{ $i }}">
+                                                    @if ($i == 0)
+                                                        CN
+                                                    @else
+                                                        {{ $i + 1 }}
+                                                    @endif
+                                                </label>
+                                            </div>
+                                        @endfor
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-primary">Sửa đổi</button>
                     </div>
                 </form>
@@ -124,7 +176,7 @@
                     <button type="submit" class="btn btn-primary" id="add_attendance">Thêm khách mời</button>
                 </div>
                 <div class="card-footer">
-                    <a href="{{URL::to('/room/destroy/'.$room->id)}}" class="btn btn-outline-danger"
+                    <a href="{{ URL::to('/room/destroy/' . $room->id) }}" class="btn btn-outline-danger"
                         onclick="return confirm('Bạn chắc chắn muốn xóa phòng họp này!')">Xóa phòng họp</a>
                 </div>
             </div>
@@ -132,6 +184,8 @@
         </div>
     </div>
     @push('scripts')
+        <!-- date-range-picker -->
+        <script src="{{ URL::asset('/app/plugins/daterangepicker/daterangepicker.js') }}"></script>
         <script src="{{ URL::asset('/app/plugins/datatables/jquery.dataTables.min.js') }}"></script>
         <script src="{{ URL::asset('/app/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
         <script src="{{ URL::asset('/app/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
@@ -146,12 +200,21 @@
         <script src="{{ URL::asset('/app/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
         <script>
             $(function() {
+                $('#reservationtime').daterangepicker({
+                    timePicker: true,
+                    timePickerIncrement: 30,
+                    locale: {
+                        format: 'MM/DD/YYYY | HH:mm:ss'
+                    }
+                });
+
                 $("#example1").DataTable({
                     "responsive": true,
                     "lengthChange": false,
                     "autoWidth": false,
                     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
                 var table = $('#example1').DataTable();
                 $('#example1 tbody').on('click', '.delete_attendance', function() {
                     var _token = $('input[name=_token]').val();

@@ -39,6 +39,7 @@ Route::get('/calendar', [HomeController::class, 'calendar']);
 
 Route::prefix('api')->group(function () {
     Route::get('event', [EventController::class, 'getEvent']);
+    Route::get('room-event', [EventController::class, 'getRoomEvent']);
     Route::post('save-event', [EventController::class, 'saveEvent']);
     Route::post('drop-event', [EventController::class, 'dropEvent']);
 });
