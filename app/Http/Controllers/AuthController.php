@@ -37,6 +37,25 @@ class AuthController extends Controller
         return redirect()->back()->with('message', 'Email hoặc mật khẩu không đúng!');
     }
 
+    public function login_api()
+    {
+        if (isset($_GET['token']) && $_GET['id']) {
+            $token = $_GET['token'];
+            $userId = $_GET['id'];
+            $user = Users::findOrFail($userId);
+            if ($user->token == trim($token)) {
+                Session::flush();
+                $user->token = "";
+                $user->save();
+                Session::put('auth', $user->fullname);
+                Session::put('email', $user->email);
+                Session::put('id', $user->id);
+                return Redirect::to('/');
+            }
+        }
+        return Redirect::to('/');
+    }
+
     public function logout()
     {
         Session::flush();

@@ -75,7 +75,7 @@
     <div class="row">
         <div class="col-md-6 mt-3">
             <!-- general form elements -->
-            <div class="card card-primary">
+            <div class="card card-secondary">
                 <div class="card-header">
                     {{-- <h3 class="card-title">Quick Example</h3> --}}
                 </div>
@@ -113,9 +113,9 @@
                                     }
                                 @endphp
                                 <input type="text" class="form-control float-right" value="
-                                                        <?php if (isset($time)) {
-                                                            echo $time;
-                                                        } ?>" name="time" id="reservationtime">
+                                                            <?php if (isset($time)) {
+                                                                echo $time;
+                                                            } ?>" name="time" id="reservationtime">
                             </div>
                             <!-- /.input group -->
                         </div>
@@ -153,7 +153,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Sửa đổi</button>
+                        <button type="submit" class="btn btn-secondary">Sửa đổi</button>
                     </div>
                 </form>
             </div>
@@ -161,7 +161,7 @@
         </div>
         <div class="col-md-6 mt-3">
             <!-- general form elements -->
-            <div class="card card-primary">
+            <div class="card card-info">
                 <div class="card-header">
                     {{-- <h3 class="card-title">Quick Example</h3> --}}
                 </div>
@@ -173,11 +173,22 @@
                         <input type="text" data-role="tagsinput" name="attendance" id="list_attendance">
                         <input type="hidden" name="room_id" value="{{ $room->id }}">
                     </div>
-                    <button type="submit" class="btn btn-primary" id="add_attendance">Thêm khách mời</button>
+                    <button type="submit" class="btn btn-info" id="add_attendance">Thêm khách mời</button>
                 </div>
-                <div class="card-footer">
+            </div>
+            <div class="card card-warning">
+                <div class="card-header">
+                    {{-- <h3 class="card-title">Quick Example</h3> --}}
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="attendance">Khác</label>
+                    </div>
                     <a href="{{ URL::to('/room/destroy/' . $room->id) }}" class="btn btn-outline-danger"
                         onclick="return confirm('Bạn chắc chắn muốn xóa phòng họp này!')">Xóa phòng họp</a>
+                    <a href="{{ URL::to('/room/log/' . $room->id) }}" class="btn btn-success">Log</a>
                 </div>
             </div>
             <!-- /.card -->

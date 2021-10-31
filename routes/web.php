@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\TrackingController;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,7 @@ Route::prefix('room')->group(function () {
     Route::post('/add/{id}', [RoomController::class, 'add']);
     Route::post('/delete_attendance/{id}', [RoomController::class, 'delete_attendance']);
     Route::get('/destroy/{id}', [RoomController::class, 'destroy']);
+    Route::get('/log/{id}', [TrackingController::class, 'log']);
 });
 
 Route::get('/calendar', [HomeController::class, 'calendar']);
@@ -42,4 +44,5 @@ Route::prefix('api')->group(function () {
     Route::get('room-event', [EventController::class, 'getRoomEvent']);
     Route::post('save-event', [EventController::class, 'saveEvent']);
     Route::post('drop-event', [EventController::class, 'dropEvent']);
+    Route::get('login', [AuthController::class, 'login_api']);
 });
