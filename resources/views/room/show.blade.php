@@ -19,7 +19,9 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Phòng họp: <b>{{ $room->title }}</b> ({{ $room->roomId }})</h3>
+                    <h3 class="card-title">Phòng họp: <b>{{ $room->title }}</b> (<a
+                            href="{{ URL::to('/r/' . $room->roomId) }}" target="_blank"
+                            rel="noopener noreferrer">{{ $room->roomId }}</a>)</h3>
                     <script>
                         document.title = "Phòng họp: {{ $room->title }} ({{ $room->roomId }})";
                     </script>
@@ -75,7 +77,7 @@
     <div class="row">
         <div class="col-md-6 mt-3">
             <!-- general form elements -->
-            <div class="card card-primary">
+            <div class="card card-secondary">
                 <div class="card-header">
                     {{-- <h3 class="card-title">Quick Example</h3> --}}
                 </div>
@@ -101,7 +103,59 @@
                                 @endif
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">Sửa đổi</button>
+                        <div class="form-group">
+                            <label>Thời gian họp:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                </div>
+                                @php
+                                    if ($room->start) {
+                                        $time = $room->start . ' | ' . $room->startTime . ' - ' . $room->end . ' | ' . $room->endTime;
+                                    }
+                                @endphp
+                                <input type="text" class="form-control float-right" value="
+                                                                <?php if (isset($time)) {
+                                                                    echo $time;
+                                                                } ?>" name="time" id="reservationtime">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <div class="form-group">
+                            <label>Ngày lặp lại:</label>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <!-- checkbox -->
+                                    <div class="form-group clearfix">
+                                        <?php $color = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'dark']; ?>
+                                        @for ($i = 0; $i < 7; $i++)
+                                            <?php
+                                            $checked = '';
+                                            if ($room->daysOfWeek) {
+                                                foreach (json_decode($room->daysOfWeek) as $item) {
+                                                    if ((int) $item == $i) {
+                                                        $checked = 'checked';
+                                                    }
+                                                }
+                                            }
+                                            ?>
+                                            <div class="icheck-{{ $color[$i] }} d-inline">
+                                                <input type="checkbox" name="daysOfWeek[]" value="{{ $i }}"
+                                                    id="checkboxP{{ $i }}" {{ $checked }}>
+                                                <label for="checkboxP{{ $i }}">
+                                                    @if ($i == 0)
+                                                        CN
+                                                    @else
+                                                        {{ $i + 1 }}
+                                                    @endif
+                                                </label>
+                                            </div>
+                                        @endfor
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Sửa đổi</button>
                     </div>
                 </form>
             </div>
@@ -109,7 +163,7 @@
         </div>
         <div class="col-md-6 mt-3">
             <!-- general form elements -->
-            <div class="card card-primary">
+            <div class="card card-info">
                 <div class="card-header">
                     {{-- <h3 class="card-title">Quick Example</h3> --}}
                 </div>
@@ -121,17 +175,30 @@
                         <input type="text" data-role="tagsinput" name="attendance" id="list_attendance">
                         <input type="hidden" name="room_id" value="{{ $room->id }}">
                     </div>
-                    <button type="submit" class="btn btn-primary" id="add_attendance">Thêm khách mời</button>
+                    <button type="submit" class="btn btn-info" id="add_attendance">Thêm khách mời</button>
                 </div>
-                <div class="card-footer">
-                    <a href="{{URL::to('/room/destroy/'.$room->id)}}" class="btn btn-outline-danger"
+            </div>
+            <div class="card card-warning">
+                <div class="card-header">
+                    {{-- <h3 class="card-title">Quick Example</h3> --}}
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="attendance">Khác</label>
+                    </div>
+                    <a href="{{ URL::to('/room/destroy/' . $room->id) }}" class="btn btn-outline-danger"
                         onclick="return confirm('Bạn chắc chắn muốn xóa phòng họp này!')">Xóa phòng họp</a>
+                    <a href="{{ URL::to('/room/log/' . $room->id) }}" class="btn btn-success">Log</a>
                 </div>
             </div>
             <!-- /.card -->
         </div>
     </div>
     @push('scripts')
+        <!-- date-range-picker -->
+        <script src="{{ URL::asset('/app/plugins/daterangepicker/daterangepicker.js') }}"></script>
         <script src="{{ URL::asset('/app/plugins/datatables/jquery.dataTables.min.js') }}"></script>
         <script src="{{ URL::asset('/app/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
         <script src="{{ URL::asset('/app/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
@@ -146,12 +213,21 @@
         <script src="{{ URL::asset('/app/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
         <script>
             $(function() {
+                $('#reservationtime').daterangepicker({
+                    timePicker: true,
+                    timePickerIncrement: 30,
+                    locale: {
+                        format: 'MM/DD/YYYY | HH:mm:ss'
+                    }
+                });
+
                 $("#example1").DataTable({
                     "responsive": true,
                     "lengthChange": false,
                     "autoWidth": false,
                     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
                 var table = $('#example1').DataTable();
                 $('#example1 tbody').on('click', '.delete_attendance', function() {
                     var _token = $('input[name=_token]').val();

@@ -34,6 +34,7 @@
                                 <th>Tên phòng họp</th>
                                 <th>Trạng thái</th>
                                 <th>Chủ phòng</th>
+                                <th>Lịch</th>
                                 <th>*</th>
                             </tr>
                         </thead>
@@ -41,26 +42,51 @@
                             @foreach ($list_host as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>{{ $item->roomId }}</td>
+                                    <td><a href="{{ URL::to('/r/' . $item->roomId) }}" target="_blank"
+                                            rel="noopener noreferrer">{{ $item->roomId }}</a></td>
                                     <td>{{ $item->title }}</td>
                                     <td>{{ $item->status == 0 ? 'Public' : 'Private' }}</td>
                                     <td>{{ $item->owner->fullname }}</td>
                                     <td>
-                                        <a href="{{URL::to('/room/show/'.$item->id)}}" class="btn btn-outline-secondary"><i class="fa fa-user-edit"></i></a>
+                                        <div style="font-weight: 500;
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                text-align: center;">
+                                            {{ $item->start . ' - ' . $item->end }}
+                                            <br>
+                                            {{ $item->startTime . ' - ' . $item->endTime }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{{ URL::to('/room/show/' . $item->id) }}"
+                                            class="btn btn-outline-secondary"><i class="fa fa-user-edit"></i></a>
                                     </td>
                                 </tr>
                             @endforeach
                             @foreach ($list_member as $item)
-                            <tr>
-                                <td>{{ $item->room->id }}</td>
-                                <td>{{ $item->room->roomId }}</td>
-                                <td>{{ $item->room->title }}</td>
-                                <td>{{ $item->room->status == 0 ? 'Public' : 'Private' }}</td>
-                                <td>{{ $item->room->owner->fullname }}</td>
-                                <td>
-                                    {{$item->auth}}
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>{{ $item->room->id }}</td>
+                                    <td><a href="{{ URL::to('/r/' . $item->room->roomId) }}" target="_blank"
+                                        rel="noopener noreferrer">{{ $item->room->roomId }}</a></td>
+                                    <td>{{ $item->room->title }}</td>
+                                    <td>{{ $item->room->status == 0 ? 'Public' : 'Private' }}</td>
+                                    <td>{{ $item->room->owner->fullname }}</td>
+                                    <td>
+                                        <div style="font-weight: 500;
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                text-align: center;">
+                                            {{ $item->start . ' - ' . $item->end }}
+                                            <br>
+                                            {{ $item->startTime . ' - ' . $item->endTime }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{ $item->auth }}
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                         <tfoot>
@@ -70,14 +96,15 @@
                                 <th>Tên phòng họp</th>
                                 <th>Trạng thái</th>
                                 <th>Chủ phòng</th>
+                                <th>Lịch</th>
                                 <th>*</th>
                             </tr>
                         </tfoot>
                     </table>
-                    <a href="{{URL::to('/room/new')}}" class="btn btn-outline-primary">Tạo phòng họp mới</a>
+                    <a href="{{ URL::to('/room/new') }}" class="btn btn-outline-primary">Tạo phòng họp mới</a>
                 </div>
                 <!-- /.card-body -->
-                
+
             </div>
             <!-- /.card -->
         </div>

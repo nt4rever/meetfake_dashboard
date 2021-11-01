@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class EventResource extends JsonResource
+class RoomResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,15 +15,17 @@ class EventResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->edit == "false" ? 1 : 2,
+            'id' => 1,
             'title' => $this->title,
             'start' => $this->start == null ? "" : $this->start,
             'end' => $this->end == null ? "" : $this->end,
-            'url' => $this->url == null ? "" : $this->url,
-            'allDay' => $this->allDay == "false" ? "" : $this->allDay,
+            'startTime' => $this->startTime == null ? "" : $this->startTime,
+            'endTime' => $this->endTime == null ? "" : $this->endTime,
+            'url' => "/r/" . $this->roomId,
+            'allDay' => "",
             'daysOfWeek' => $this->daysOfWeek == null ? "" : $this->daysOfWeek,
-            'backgroundColor' => $this->backgroundColor == null ? "" : $this->backgroundColor,
-            'borderColor' => $this->borderColor == null ? "" : $this->borderColor,
+            'backgroundColor' => "#3c8dbc",
+            'borderColor' => "#3c8dbc",
         ];
     }
 }

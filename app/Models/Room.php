@@ -12,7 +12,7 @@ class Room extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'roomId', 'title', 'status', 'host',
+        'roomId', 'title', 'status', 'host', 'start', 'end', 'daysOfWeek', 'startTime', 'endTime'
     ];
     public $timestamps = true;
 

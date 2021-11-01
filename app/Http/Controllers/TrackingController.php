@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Room;
+use App\Models\Tracking;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
-class HomeController extends Controller
+class TrackingController extends Controller
 {
     public function AuthLogin()
     {
@@ -18,20 +20,14 @@ class HomeController extends Controller
         return Redirect::to('/login')->send();
     }
 
-    public function index()
+    public function log($id)
     {
         $this->AuthLogin();
-        return view('index');
-    }
-
-    public function calendar()
-    {
-        $this->AuthLogin();
-        return view('util.calendar');
-    }
-
-    public function redirect($room)
-    {
-        return Redirect::to(env('MEET_URL', 'http://localhost:8080') . '/room/' . $room);
+        $userId = Session::get('id');
+        $room = Room::findOrFail($id);
+        if ($room->host != $userId)
+            return redirect()->back();
+        $list = Tracking::where('room_id', $id)->get();
+        return view('util.log', compact('list', 'room'));
     }
 }

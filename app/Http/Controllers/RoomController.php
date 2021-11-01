@@ -82,6 +82,18 @@ class RoomController extends Controller
             return redirect()->back();
         $room->title = $request->title;
         $room->status = $request->status;
+        if ($request->time) {
+            //11/21/2021 | 06:00 AM - 11/25/2021 | 09:00 AM
+            $arr = explode("-", $request->time);
+            $dayStart = explode("|", $arr[0]);
+            $dayEnd = explode("|", $arr[1]);
+            $room->start = trim($dayStart[0]);
+            $room->startTime = trim($dayStart[1]);
+            $room->end = trim($dayEnd[0]);
+            $room->endTime = trim($dayEnd[1]);
+        }
+        if ($request->daysOfWeek)
+            $room->daysOfWeek = $request->daysOfWeek;
         $room->save();
         return Redirect::to('/room/show/' . $id);
     }
