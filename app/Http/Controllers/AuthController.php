@@ -43,7 +43,7 @@ class AuthController extends Controller
             $token = $_GET['token'];
             $userId = $_GET['id'];
             $user = Users::findOrFail($userId);
-            if ($user->token == trim($token)) {
+            if ($user->token == trim($token) && $user->token != "") {
                 Session::flush();
                 $user->token = "";
                 $user->save();

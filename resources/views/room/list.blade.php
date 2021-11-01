@@ -42,16 +42,17 @@
                             @foreach ($list_host as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>{{ $item->roomId }}</td>
+                                    <td><a href="{{ URL::to('/r/' . $item->roomId) }}" target="_blank"
+                                            rel="noopener noreferrer">{{ $item->roomId }}</a></td>
                                     <td>{{ $item->title }}</td>
                                     <td>{{ $item->status == 0 ? 'Public' : 'Private' }}</td>
                                     <td>{{ $item->owner->fullname }}</td>
                                     <td>
                                         <div style="font-weight: 500;
-                                            display: flex;
-                                            align-items: center;
-                                            justify-content: center;
-                                            text-align: center;">
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                text-align: center;">
                                             {{ $item->start . ' - ' . $item->end }}
                                             <br>
                                             {{ $item->startTime . ' - ' . $item->endTime }}
@@ -66,16 +67,17 @@
                             @foreach ($list_member as $item)
                                 <tr>
                                     <td>{{ $item->room->id }}</td>
-                                    <td>{{ $item->room->roomId }}</td>
+                                    <td><a href="{{ URL::to('/r/' . $item->room->roomId) }}" target="_blank"
+                                        rel="noopener noreferrer">{{ $item->room->roomId }}</a></td>
                                     <td>{{ $item->room->title }}</td>
                                     <td>{{ $item->room->status == 0 ? 'Public' : 'Private' }}</td>
                                     <td>{{ $item->room->owner->fullname }}</td>
                                     <td>
                                         <div style="font-weight: 500;
-                                            display: flex;
-                                            align-items: center;
-                                            justify-content: center;
-                                            text-align: center;">
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                text-align: center;">
                                             {{ $item->start . ' - ' . $item->end }}
                                             <br>
                                             {{ $item->startTime . ' - ' . $item->endTime }}

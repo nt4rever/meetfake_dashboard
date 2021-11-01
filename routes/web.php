@@ -46,3 +46,5 @@ Route::prefix('api')->group(function () {
     Route::post('drop-event', [EventController::class, 'dropEvent']);
     Route::get('login', [AuthController::class, 'login_api']);
 });
+
+Route::get('/r/{room}', [HomeController::class, 'redirect']);

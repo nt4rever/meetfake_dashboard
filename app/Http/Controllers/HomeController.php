@@ -29,4 +29,9 @@ class HomeController extends Controller
         $this->AuthLogin();
         return view('util.calendar');
     }
+
+    public function redirect($room)
+    {
+        return Redirect::to(env('MEET_URL', 'http://localhost:8080') . '/room/' . $room);
+    }
 }

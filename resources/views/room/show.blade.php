@@ -19,7 +19,9 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Phòng họp: <b>{{ $room->title }}</b> ({{ $room->roomId }})</h3>
+                    <h3 class="card-title">Phòng họp: <b>{{ $room->title }}</b> (<a
+                            href="{{ URL::to('/r/' . $room->roomId) }}" target="_blank"
+                            rel="noopener noreferrer">{{ $room->roomId }}</a>)</h3>
                     <script>
                         document.title = "Phòng họp: {{ $room->title }} ({{ $room->roomId }})";
                     </script>
@@ -113,9 +115,9 @@
                                     }
                                 @endphp
                                 <input type="text" class="form-control float-right" value="
-                                                            <?php if (isset($time)) {
-                                                                echo $time;
-                                                            } ?>" name="time" id="reservationtime">
+                                                                <?php if (isset($time)) {
+                                                                    echo $time;
+                                                                } ?>" name="time" id="reservationtime">
                             </div>
                             <!-- /.input group -->
                         </div>

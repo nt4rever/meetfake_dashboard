@@ -21,7 +21,7 @@ class RoomResource extends JsonResource
             'end' => $this->end == null ? "" : $this->end,
             'startTime' => $this->startTime == null ? "" : $this->startTime,
             'endTime' => $this->endTime == null ? "" : $this->endTime,
-            'url' => "join/" . $this->roomId,
+            'url' => "/r/" . $this->roomId,
             'allDay' => "",
             'daysOfWeek' => $this->daysOfWeek == null ? "" : $this->daysOfWeek,
             'backgroundColor' => "#3c8dbc",
