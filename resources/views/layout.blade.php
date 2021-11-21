@@ -206,7 +206,7 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="pages/gallery.html" class="nav-link">
                                 <i class="nav-icon far fa-image"></i>
                                 <p>
@@ -234,7 +234,7 @@
                                 <i class="nav-icon fas fa-file"></i>
                                 <p>Documentation</p>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="nav-header">Tài khoản</li>
                         <li class="nav-item">
                             <a href="{{ URl::to('/logout') }}" class="nav-link">

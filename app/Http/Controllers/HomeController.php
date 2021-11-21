@@ -34,4 +34,15 @@ class HomeController extends Controller
     {
         return Redirect::to(env('MEET_URL', 'http://localhost:8080') . '/room/' . $room);
     }
+
+    public function file(Request $request)
+    {
+        $get_file = $request->file('userfile');
+        $get_name_file = $get_file->getClientOriginalName();
+        $name_file = current(explode('.', $get_name_file));
+        $new_file = $name_file . '-' . date('dmYHis')  . '.' . $get_file->getClientOriginalExtension();
+        $get_file->move('uploads', $new_file);
+        $response = env('APP_URL', 'http://localhost:8080') . '/uploads/' . $new_file;
+        return $response;
+    }
 }
