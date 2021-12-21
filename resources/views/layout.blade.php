@@ -198,7 +198,7 @@
                         </li>
                         <li class="nav-header">UTILS</li>
                         <li class="nav-item">
-                            <a href="{{URL::to('/calendar')}}" class="nav-link">
+                            <a href="{{ URL::to('/calendar') }}" class="nav-link">
                                 <i class="nav-icon far fa-calendar-alt"></i>
                                 <p>
                                     Calendar
@@ -236,6 +236,12 @@
                             </a>
                         </li> --}}
                         <li class="nav-header">Tài khoản</li>
+                        <li class="nav-item">
+                            <a href="{{ URL::to('/user/') }}" class="nav-link">
+                                <i class="nav-icon fas fa-user-shield"></i>
+                                <p>Tài khoản</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="{{ URl::to('/logout') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-warning"></i>
@@ -275,6 +281,7 @@
         <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
+    <!-- Button trigger modal -->
 
     <!-- jQuery -->
     <script src="{{ URL::asset('/app/plugins/jquery/jquery.min.js') }}"></script>
@@ -299,7 +306,8 @@
     <script src="{{ URL::asset('/app/plugins/moment/moment.min.js') }}"></script>
     <script src="{{ URL::asset('/app/plugins/daterangepicker/daterangepicker.js') }}"></script>
     <!-- Tempusdominus Bootstrap 4 -->
-    <script src="{{ URL::asset('/app/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+    <script src="{{ URL::asset('/app/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}">
+    </script>
     <!-- Summernote -->
     <script src="{{ URL::asset('/app/plugins/summernote/summernote-bs4.min.js') }}"></script>
     <!-- overlayScrollbars -->
@@ -314,6 +322,46 @@
     <script src="{{ URL::asset('/app/dist/js/demo.js') }}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     {{-- <script src="{{URL::asset('/app/dist/js/pages/dashboard.js')}}"></script> --}}
+    @php
+        $message = Session::get('message');
+        Session::put('message', null);
+    @endphp
+    @if ($message || $errors->any())
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @if ($message)
+                            {{ $message }}
+                        @endif
+                        @if ($errors->any())
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(function() {
+                $('#exampleModal').modal('show');
+            });
+        </script>
+    @endif
     @stack('scripts')
 </body>
 
