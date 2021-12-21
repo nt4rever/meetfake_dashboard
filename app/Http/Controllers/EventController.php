@@ -45,7 +45,6 @@ class EventController extends Controller
         return response()->json(RoomResource::collection($list));
     }
 
-
     public function saveEvent(Request $request)
     {
         $auth = Session::get('auth');
@@ -53,20 +52,10 @@ class EventController extends Controller
             return false;
         $userId = Session::get('id');
         if ($request->user_id == $userId) {
-            Event::create($request->all());
-            return true;
-        }
-        return false;
-    }
-
-    public function dropEvent(Request $request)
-    {
-        $auth = Session::get('auth');
-        if (!$auth)
-            return false;
-        $userId = Session::get('id');
-        if ($request->user_id == $userId) {
             Event::where('user_id', $userId)->where('edit', 'true')->delete();
+            foreach ($request->events as $item) {
+                Event::create($item);
+            }
             return true;
         }
         return false;

@@ -180,7 +180,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-item menu-open">
-                            <a href="#" class="nav-link active">
+                            <a href="/" class="nav-link active">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -192,7 +192,7 @@
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
                                     Phòng họp
-                                    <span class="right badge badge-danger">New</span>
+                                    {{-- <span class="badge badge-info right">2</span> --}}
                                 </p>
                             </a>
                         </li>
@@ -202,7 +202,7 @@
                                 <i class="nav-icon far fa-calendar-alt"></i>
                                 <p>
                                     Calendar
-                                    <span class="badge badge-info right">2</span>
+                                    <span class="right badge badge-danger">New</span>
                                 </p>
                             </a>
                         </li>

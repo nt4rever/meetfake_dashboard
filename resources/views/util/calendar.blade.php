@@ -39,8 +39,6 @@
                                     <div class="external-event bg-success">Lunch</div>
                                     <div class="external-event bg-warning">Go home</div>
                                     <div class="external-event bg-info">Do homework</div>
-                                    <div class="external-event bg-primary">Work on UI design</div>
-                                    <div class="external-event bg-danger">Sleep tight</div>
                                     <div class="checkbox">
                                         <label for="drop-remove">
                                             <input type="checkbox" id="drop-remove">
@@ -218,56 +216,44 @@
                 var user_id = $('input[name=user_id]').val();
                 $('#save-event').click(function() {
                     let evs = calendar.getEvents();
+                    var listEvents = [];
+                    evs.forEach(element => {
+                        if (element.id == 2) {
+                            listEvents.push({
+                                user_id: user_id,
+                                title: element.title,
+                                start: element.start,
+                                end: element.end,
+                                allDay: element.allDay,
+                                daysOfWeek: element.daysOfWeek,
+                                url: element.url,
+                                backgroundColor: element.backgroundColor,
+                                borderColor: element.borderColor,
+                            });
+                        }
+                    });
                     $.ajax({
                         type: "POST",
                         cache: false,
-                        url: '/api/drop-event',
+                        url: '/api/save-event',
                         data: {
                             user_id: user_id,
+                            events: listEvents,
                             _token: _token
                         },
                         dataType: "json",
                         success: function(data) {
-                            // console.log(data);
+                            if (data == true)
+                                Swal.fire(
+                                    'Done!',
+                                    'You event has been saved!',
+                                    'success'
+                                );
                         },
                         error: function(error) {
                             console.log(error);
                         }
                     });
-                    evs.forEach(element => {
-                        // console.log(element)
-                        if (element.id == 2) {
-                            $.ajax({
-                                type: "POST",
-                                cache: false,
-                                url: '/api/save-event',
-                                data: {
-                                    user_id: user_id,
-                                    title: element.title,
-                                    start: element.start,
-                                    end: element.end,
-                                    allDay: element.allDay,
-                                    daysOfWeek: element.daysOfWeek,
-                                    url: element.url,
-                                    backgroundColor: element.backgroundColor,
-                                    borderColor: element.borderColor,
-                                    _token: _token
-                                },
-                                dataType: "json",
-                                success: function(data) {
-                                    // console.log(data);
-                                },
-                                error: function(error) {
-                                    console.log(error);
-                                }
-                            });
-                        }
-                    });
-                    Swal.fire(
-                        'Done!',
-                        'You event has been saved!',
-                        'success'
-                    );
                 })
                 /* ADDING EVENTS */
                 var currColor = '#3c8dbc' //Red by default
