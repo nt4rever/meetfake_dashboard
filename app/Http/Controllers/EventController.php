@@ -53,9 +53,10 @@ class EventController extends Controller
         $userId = Session::get('id');
         if ($request->user_id == $userId) {
             Event::where('user_id', $userId)->where('edit', 'true')->delete();
-            foreach ($request->events as $item) {
-                Event::create($item);
-            }
+            if (isset($request->events))
+                foreach ($request->events as $item) {
+                    Event::create($item);
+                }
             return true;
         }
         return false;
